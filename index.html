@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#03070c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Jarvis">
+<title>J.A.R.V.I.S.</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2303070c'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%2349e6ff' stroke-width='4' stroke-dasharray='10 4'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23d9f6ff'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2303070c'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%2349e6ff' stroke-width='4' stroke-dasharray='10 4'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23d9f6ff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{--void:#03070c;--cyan:#49e6ff;--dim:#2a9fb8;--ice:#d9f6ff;--mute:#7fa3b3;--line:rgba(73,230,255,.25);color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--void);color:var(--ice);font-family:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;display:grid;place-items:center;padding:24px 16px;overflow:hidden}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(700px 420px at 50% 40%,rgba(73,230,255,.14),transparent 70%),repeating-linear-gradient(0deg,rgba(73,230,255,.035) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,rgba(73,230,255,.04) 0 1px,transparent 1px 64px),repeating-linear-gradient(0deg,rgba(73,230,255,.04) 0 1px,transparent 1px 64px)}
+main{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px;text-align:center;max-width:520px}
+canvas{width:min(62vw,240px);height:auto;aspect-ratio:1}
+.eyebrow{font-size:11px;letter-spacing:.3em;color:var(--dim);text-transform:uppercase}
+h1{margin:0;font-family:"Chakra Petch",system-ui,sans-serif;font-weight:600;font-size:clamp(30px,7vw,46px);letter-spacing:.14em;color:var(--ice);text-shadow:0 0 22px rgba(73,230,255,.45)}
+p{margin:0;color:var(--mute);font-size:13.5px;line-height:1.7}
+a.go{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-family:"Chakra Petch",system-ui,sans-serif;font-weight:600;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:#012029;background:var(--cyan);padding:14px 26px;clip-path:polygon(0 10px,10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%);transition:background .2s,box-shadow .2s}
+a.go:hover{background:#7aeeff;box-shadow:0 0 28px rgba(73,230,255,.45)}
+a.go:focus-visible{outline:1px solid var(--cyan);outline-offset:4px}
+.status{font-size:11px;letter-spacing:.18em;color:#5cf2a6}
+.status i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5cf2a6;box-shadow:0 0 10px #5cf2a6;margin-right:8px;animation:p 2s infinite}
+@keyframes p{50%{opacity:.35}}
+.small{font-size:11.5px;color:var(--mute);opacity:.8}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Sistema pessoal</div>
+  <canvas id="arc" width="300" height="300" aria-hidden="true"></canvas>
+  <h1>J.A.R.V.I.S.</h1>
+  <div class="status"><i></i>SISTEMAS ONLINE</div>
+  <a class="go" id="go" href="https://claude.ai/artifact/TkgAXjkMhyTZJj5pkG93iA">Iniciar</a>
+  <p>O painel abre no claude.ai e só funciona logado na conta do dono.</p>
+  <p class="small">No celular: compartilhar &gt; Adicionar à tela de início.</p>
+</main>
+<script>
+(function(){
+  var c=document.getElementById("arc"),x=c.getContext("2d"),R=150,t=0;
+  var still=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function ring(r,w,n,g,rot,a){x.lineWidth=w;x.strokeStyle="rgba(73,230,255,"+a+")";var s=Math.PI*2/n;for(var i=0;i<n;i++){x.beginPath();x.arc(R,R,r,rot+i*s,rot+(i+1)*s-g);x.stroke();}}
+  function draw(){
+    x.clearRect(0,0,300,300);
+    var g=x.createRadialGradient(R,R,0,R,R,R);g.addColorStop(0,"rgba(180,245,255,.6)");g.addColorStop(.2,"rgba(73,230,255,.35)");g.addColorStop(.55,"rgba(73,230,255,.05)");g.addColorStop(1,"rgba(0,0,0,0)");
+    x.fillStyle=g;x.beginPath();x.arc(R,R,R,0,7);x.fill();
+    ring(132,2,72,.03,t*.15,.35);ring(118,7,10,.18,-t*.4,.6);ring(100,1.2,3,.9,t*.9,.8);ring(88,10,24,.06,t*.25,.3);ring(70,3,6,.35,-t*.7,.85);
+    x.fillStyle="rgba(225,250,255,.95)";x.beginPath();x.arc(R,R,22+Math.sin(t*2)*1.5,0,7);x.fill();
+    t+=.016;if(!still)requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
