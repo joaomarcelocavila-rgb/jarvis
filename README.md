@@ -4,12 +4,13 @@ Assistente pessoal que trabalha em turnos para vários negócios ao mesmo tempo.
 
 Este repositório guarda só o código.
 
-**Abrir o Jarvis:** https://joaomarcelocavila-rgb.github.io/jarvis/ (página de entrada que leva ao painel no claude.ai). Memória, contatos e dados de clientes ficam fora do repositório.
+**Abrir o Jarvis:** https://joaomarcelocavila-rgb.github.io/jarvis/ — app instalável (PWA) que funciona sozinho, sem passar pelo claude.ai. Pede login e só mostra dados para o e-mail do dono (RLS no Supabase). Memória, contatos e dados de clientes ficam no banco, fora do repositório.
 
 ## Estrutura
 
 ```
-  index.html                               página de entrada (GitHub Pages)
+  index.html                               app completo (GitHub Pages + Supabase)
+  manifest.webmanifest, sw.js, icon-*.png  instalação como app
   painel/jarvis.html                       painel em estilo HUD (artifact do claude.ai)
   supabase/functions/jarvis-asaas/index.ts recebe os webhooks do Asaas
   supabase/migrations/jarvis_vendas_asaas.sql
@@ -20,6 +21,7 @@ Este repositório guarda só o código.
 
 ## Como funciona
 
+- **App** (`index.html`): login com Supabase Auth, lê e grava nas tabelas `jv_*` (leads, memória, lembretes, rotina, briefing, config, pedidos de SaaS) e chama as funções `jv_vendas` e `jv_relatorio_maisodonto`. A voz usa o widget do ElevenLabs, com o id do agente lido do banco depois do login. O botão Gerar coloca a ideia na fila `jv_saas_pedidos`, e a tarefa Gerador constrói o protótipo em até 1 hora. Não tem conversa por texto: essa fica no painel do claude.ai.
 - **Painel** (`painel/jarvis.html`): roda como artifact no claude.ai. Ele depende das capacidades do runtime de artifacts (`window.claude.use`): `sample` para a conversa, `db` para lembretes, rotina, briefing e memória, e `mcp` para o Supabase (`execute_sql`) e as tarefas agendadas (`fire_trigger`, `list_triggers`). **Aberto direto do GitHub Pages ele carrega o visual, mas as funções ficam desligadas.**
 - **Vendas**: o webhook do Asaas chama a função `jarvis-asaas`, que grava em `jarvis.vendas`. O painel lê essa tabela só com SELECT.
 - **Tarefas agendadas** (prompts em `tarefas/`):
@@ -27,8 +29,8 @@ Este repositório guarda só o código.
   - Relatório MaisOdonto: diário.
   - Turno do Jarvis: a cada 2 horas, com prospecção, produção, resumo, follow-up, pesquisa, aprovações e fechamento.
   - Ideias de SaaS: de hora em hora.
-  - Gerador de SaaS: sob demanda, pelo botão Gerar.
-- **Memória**: arquivos markdown guardados no banco do artifact (collection `memoria`). Os modelos estão em `memoria-modelo/`.
+  - Gerador de SaaS: de hora em hora, aos 41 min, processa a fila de pedidos.
+- **Memória**: arquivos markdown na tabela `jv_memoria` do Supabase. Os modelos estão em `memoria-modelo/`.
 
 ## Para instalar em outra conta
 

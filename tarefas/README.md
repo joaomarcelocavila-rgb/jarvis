@@ -1,3 +1,5 @@
+> Atualizado: as tarefas agora leem e gravam nas tabelas `jv_*` do Supabase (via conector Supabase, `execute_sql`), não mais no armazenamento do artifact. Onde este texto disser "db do artifact", leia "tabela jv_* correspondente" (jv_memoria, jv_leads, jv_briefing, jv_saas_pedidos, jv_config).
+
 # Tarefas agendadas do Jarvis
 
 | Tarefa | Quando (America/Recife) | Prompt |
