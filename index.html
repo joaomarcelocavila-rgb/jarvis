@@ -268,6 +268,10 @@ td.r,th.r{text-align:right}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 
+.idea .oque{margin:10px 0 6px;font-size:14.5px;line-height:1.55;color:var(--ice)}
+.idea .como{margin:0 0 10px;padding-left:20px;font-size:13.5px;line-height:1.55;color:var(--ice)}
+.idea .como li{margin:3px 0}
+.idea .como li::marker{color:var(--cyan);font-family:var(--f-data)}
 /* ---------- relatórios ---------- */
 .rl-nav{display:flex;gap:8px;align-items:center;margin-bottom:14px}
 .rl-nav select{flex:1;min-width:0;text-transform:capitalize}
@@ -412,7 +416,7 @@ html,body{margin:0}
     <input type="password" id="lgSenha" autocomplete="current-password" placeholder="senha" required>
     <button class="btn solid" type="submit" id="lgBtn">Entrar</button>
     <div id="lgMsg"></div>
-    <p class="small">Versão 7</p>
+    <p class="small">Versão 8</p>
     <p class="small">Use o mesmo login da sua conta de administrador do MaisOdonto.</p>
   </form>
 </div>
@@ -494,7 +498,7 @@ html,body{margin:0}
           </div>
           <div class="frame">
             <div class="ph"><h2>Conta</h2></div>
-            <div class="status-list"><div><span>Login</span><span id="stUser" class="ok">—</span></div><div><span>Dados</span><span id="stDb" class="off">verificando</span></div><div><span>Versão</span><span class="ok">7 · barra fixa</span></div></div>
+            <div class="status-list"><div><span>Login</span><span id="stUser" class="ok">—</span></div><div><span>Dados</span><span id="stDb" class="off">verificando</span></div><div><span>Versão</span><span class="ok">8</span></div></div>
             <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="btnSair">Sair</button><a class="btn" href="https://claude.ai/artifact/TkgAXjkMhyTZJj5pkG93iA" target="_blank" rel="noopener">Conversar por texto (Claude)</a></div>
           </div>
         </aside>
@@ -1048,13 +1052,14 @@ function renderSaas(){
 }
 
 /* ---------- Gerar ---------- */
-function secao(md,titulo){ const re=new RegExp("^##\\s+"+titulo+"[^\\n]*\\n([\\s\\S]*?)(?=\\n##\\s|$)","mi"); const m=(md||"").match(re); return m?m[1].trim():""; }
+function secao(md,titulo){ const re=new RegExp("^##\\s+"+titulo+"[^\\n]*\\n([\\s\\S]*?)(?=\\n##\\s|(?![\\s\\S]))","mi"); const m=(md||"").match(re); return m?m[1].trim():""; }
 function nota(md,rot){ const m=(md||"").match(new RegExp("-\\s*"+rot+"[^:]*:\\s*([\\d.,]+)","i")); return m?parseFloat(m[1].replace(",",".")):null; }
 function fichas(){
   return S.mem.filter(d=>d.path.startsWith("negocios/saas/")&&!/placar\.md$|_modelo\.md$|descartadas\.md$/.test(d.path)).map(d=>{
     const c=d.conteudo||""; const sl=d.path.replace(/^negocios\/saas\//,"").replace(/\.md$/,"");
     const dt=c.match(/^Data:\s*(\d{2})\/(\d{2})\/(\d{4})/m)||[]; const quando=dt.length?`${dt[3]}-${dt[2]}-${dt[1]}`:"";
     return { path:d.path, slug:sl, conteudo:c, titulo:((c.match(/^#\s+(.+)$/m)||[])[1]||sl), status:((c.match(/^Status:\s*(.+)$/mi)||[])[1]||"ideia").trim(),
+      oque:secao(c,"O que é"), como:secao(c,"Como funciona"),
       publico:secao(c,"Público"), dor:secao(c,"Dor em uma frase"), decisao:secao(c,"Decisão"), preco:secao(c,"Preço sugerido"),
       dorN:nota(c,"Dor"), pagar:nota(c,"Disposição"), alcance:nota(c,"Facilidade de alcançar"), construir:nota(c,"Facilidade de construir"), media:nota(c,"Média"), quando, atualizado:d.atualizado_em||"" };
   }).sort((a,b)=>(b.quando+b.atualizado)>(a.quando+a.atualizado)?1:-1);
@@ -1062,6 +1067,12 @@ function fichas(){
 function promptIA(f){
   const pronto=secao(f.conteudo,"Prompt para outras IAs"); if(pronto) return pronto;
   return `Crie um SaaS web completo, pronto para uso, chamado provisoriamente "${f.titulo}".
+
+O QUE É
+${f.oque||""}
+
+COMO FUNCIONA
+${f.como||""}
 
 PÚBLICO
 ${f.publico}
@@ -1135,8 +1146,10 @@ function renderGerar(){
     acts.append(bp, el("button",{class:"x",text:"ver ficha",onclick:()=>{ S.memSel=f.path; show("memoria"); renderMem(); }}));
     box.append(el("article",{class:"idea"+(md>=7?" hot":"")},
       el("div",{class:"top"}, el("div",{}, el("h3",{text:f.titulo}), el("div",{class:"who",text:[f.quando?f.quando.split("-").reverse().join("/"):"",f.status].filter(Boolean).join(" · ")})), el("div",{class:"score "+cls}, md==null?"—":md.toFixed(2).replace(".",","), el("small",{text:"NOTA"}))),
+      f.oque?el("p",{class:"oque",text:f.oque.replace(/\s+/g," ")}):null,
+      f.como?el("ol",{class:"como"},...f.como.split("\n").map(l=>l.match(/^\s*\d+[.)]\s*(.*)/)).filter(Boolean).map(m=>el("li",{text:m[1]}))):null,
       f.publico?el("div",{class:"who",text:"Para: "+f.publico.split("\n")[0]}):null,
-      f.dor?el("p",{class:"dor",text:f.dor.split("\n")[0]}):null,
+      f.dor?el("p",{class:"dor",text:(f.oque?"Dor: ":"")+f.dor.split("\n")[0]}):null,
       el("div",{class:"bars4"}, ...barra("Dor",f.dorN), ...barra("Pagaria",f.pagar), ...barra("Alcance",f.alcance), ...barra("Construir",f.construir)),
       f.decisao?el("div",{class:"op",text:f.decisao.split("\n")[0]}):null,
       acts));
