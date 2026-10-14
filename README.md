@@ -1,6 +1,6 @@
 # J.A.R.V.I.S.
 
-Assistente pessoal que trabalha em turnos para vários negócios ao mesmo tempo. Abas do painel: Núcleo (conversa e voz), Briefing, Vendas (Asaas), Odonto (relatório do MaisOdonto), Lembretes, Rotina, Leads (captados com telefone e mensagem pronta), Gerar (ideias de SaaS e protótipos), SaaS (placar) e Memória.
+Assistente pessoal que trabalha em turnos para vários negócios ao mesmo tempo. Abas do painel: Núcleo (conversa e voz), Relatórios (tudo que o Jarvis gera, guardado por dia), Briefing, Vendas (Asaas), Odonto (relatório do MaisOdonto), Lembretes, Rotina, Leads (captados com telefone e mensagem pronta), Gerar (ideias de SaaS e protótipos), SaaS (placar) e Memória.
 
 Este repositório guarda só o código.
 

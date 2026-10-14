@@ -267,6 +267,29 @@ td.r,th.r{text-align:right}
 .st-pill.descartada{color:var(--red);border-color:rgba(255,90,95,.4)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
+
+/* ---------- relatórios ---------- */
+.rl-nav{display:flex;gap:8px;align-items:center;margin-bottom:14px}
+.rl-nav select{flex:1;min-width:0;text-transform:capitalize}
+.rl-arrow{padding:0;width:44px;min-height:40px;justify-content:center}
+.rl-arrow svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2}
+.rl-arrow:disabled{opacity:.3;cursor:default}
+.rl-list{display:grid;gap:12px}
+.rl-card{border:1px solid var(--line);border-radius:4px;background:rgba(2,8,14,.55);padding:14px 16px}
+.rl-card .hd{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.rl-card h3{margin:0;font-family:var(--f-display);font-weight:600;font-size:15px;letter-spacing:.02em;color:var(--ice)}
+.rl-card .tag{font-family:var(--f-data);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan-dim);white-space:nowrap}
+.rl-card .when{font-family:var(--f-data);font-size:11px;color:var(--mute);margin-top:2px}
+.rl-body{margin-top:10px;font-size:14px;line-height:1.6;color:var(--ice);overflow-wrap:anywhere}
+.rl-body.fold{max-height:220px;overflow:hidden;-webkit-mask-image:linear-gradient(#000 70%,transparent);mask-image:linear-gradient(#000 70%,transparent)}
+.rl-body h4{font-family:var(--f-display);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin:14px 0 6px}
+.rl-body p{margin:0 0 8px}
+.rl-body ul{margin:0 0 8px;padding-left:18px}
+.rl-body li{margin:2px 0}
+.rl-body a{color:var(--cyan)}
+.rl-body pre{font-family:var(--f-data);font-size:12px;white-space:pre-wrap;margin:0 0 8px;color:var(--mute)}
+.rl-card .acts{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.rl-card .acts .btn{min-height:34px;padding:6px 12px;font-size:11px}
 /* ---------- celular ---------- */
 #vdTable,#saasTable{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
 #vdTable table,#saasTable table{min-width:520px}
@@ -339,9 +362,10 @@ main{overflow-x:clip}
   <nav class="rail" role="tablist" aria-label="Módulos">
     <div class="mark">J.A.R.V.I.S.</div>
     <button class="tab" role="tab" data-v="nucleo" aria-selected="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg>Núcleo</button>
+    <button class="tab" role="tab" data-v="relatorios" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 12h7M9 16h7M9 8h3"/></svg>Relatórios</button>
     <button class="tab" role="tab" data-v="leads" aria-selected="false"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3 3 0 010 6M18 14c2 .7 3 2.8 3 6"/></svg>Leads<span class="badge" id="badgeLeads" hidden>0</span></button>
     <button class="tab sec" role="tab" data-v="briefing" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 3 6-8 3 3"/><path d="M3 21h18"/></svg>Briefing</button>
-    <button class="tab" role="tab" data-v="vendas" aria-selected="false"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/></svg>Vendas</button>
+    <button class="tab sec" role="tab" data-v="vendas" aria-selected="false"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/></svg>Vendas</button>
     <button class="tab sec" role="tab" data-v="maisodonto" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M7 3c-2.5 0-4 2-4 4.5 0 3 1.5 4 2 7s1 6.5 2.5 6.5S9 17 12 17s3.5 4 5 4 2-3.5 2.5-6.5 2-4 2-7C21.5 5 20 3 17 3c-2 0-3 1-5 1S9 3 7 3z"/></svg>Odonto</button>
     <button class="tab" role="tab" data-v="gerar" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Gerar<span class="badge" id="badgeGer" hidden>0</span></button>
     <button class="tab sec" role="tab" data-v="saas" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>SaaS</button>
@@ -354,6 +378,7 @@ main{overflow-x:clip}
   <div class="sheet" id="maisSheet" hidden role="menu" aria-label="Mais módulos">
     <div class="sheet-grip"></div>
     <div class="sheet-grid">
+      <button role="menuitem" data-go="vendas">Vendas</button>
       <button role="menuitem" data-go="briefing">Briefing</button>
       <button role="menuitem" data-go="maisodonto">MaisOdonto</button>
       <button role="menuitem" data-go="lembretes">Lembretes<span class="badge" data-b="badgeLem" hidden></span></button>
@@ -520,6 +545,19 @@ main{overflow-x:clip}
     </section>
 
     <!-- LEMBRETES -->
+    <section class="view" id="v-relatorios" hidden>
+      <div class="frame">
+        <div class="ph"><h2>Relatórios</h2><span class="meta" id="rlMeta"></span></div>
+        <div class="rl-nav">
+          <button class="btn rl-arrow" id="rlPrev" aria-label="Dia anterior"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <label for="rlDia" class="sr">Dia</label>
+          <select id="rlDia"></select>
+          <button class="btn rl-arrow" id="rlNext" aria-label="Próximo dia"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+        <div class="ger-filter rl-tipos" id="rlTipos" role="group" aria-label="Tipo de relatório"></div>
+        <div id="rlList" class="rl-list"></div>
+      </div>
+    </section>
     <section class="view" id="v-lembretes" hidden>
       <div class="frame">
         <div class="ph"><h2>Lembretes</h2><span class="meta" id="lemMeta"></span></div>
@@ -627,7 +665,7 @@ try{ pickVoice(); speechSynthesis.onvoiceschanged=pickVoice; }catch{}
 function falar(txt){ if(!txt) return; try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(txt.replace(/[*#_`>]/g,"").slice(0,1500)); u.lang="pt-BR"; if(voice) u.voice=voice; u.rate=1.02; u.pitch=.85; speechSynthesis.speak(u); }catch{} }
 
 /* ---------- navegação ---------- */
-const views=["nucleo","leads","briefing","vendas","maisodonto","gerar","saas","lembretes","rotina","memoria"];
+const views=["nucleo","relatorios","leads","briefing","vendas","maisodonto","gerar","saas","lembretes","rotina","memoria"];
 function show(v){
   for(const id of views){ $("#v-"+id).hidden = id!==v; }
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected", String(t.dataset.v===v)));
@@ -636,6 +674,7 @@ function show(v){
   window.scrollTo(0,0); if(typeof syncMais==="function") syncMais();
   if(v==="vendas") loadVendas();
   if(v==="leads") loadLeads();
+  if(v==="relatorios") loadRelatorios();
 }
 document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>show(t.dataset.v)));
 document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>show(b.dataset.goto)));
@@ -856,7 +895,7 @@ function textoRelatorio(r){
 }
 $("#moLoad").addEventListener("click", async()=>{
   const b=$("#moLoad"); b.disabled=true; $("#moMsg").replaceChildren();
-  try{ const { data, error } = await sb.rpc("jv_relatorio_maisodonto"); if(error) throw error; renderMO(data); }
+  try{ const { data, error } = await sb.rpc("jv_relatorio_maisodonto"); if(error) throw error; renderMO(data); sb.from("jv_relatorios").upsert({ dia:hojeISO(), tipo:"maisodonto", chave:"", titulo:"Relatório MaisOdonto", conteudo:textoRelatorio(data), atualizado_em:new Date().toISOString() },{ onConflict:"dia,tipo,chave" }).then(()=>{}); }
   catch(e){ erroBox("#moMsg","Não consegui gerar o relatório: "+errMsg(e)); }
   finally{ b.disabled=false; }
 });
@@ -1070,8 +1109,72 @@ $("#rotForm").addEventListener("submit",async e=>{ e.preventDefault(); const dia
   S.rotina.push(data[0]); $("#rotTxt").value=""; renderRotina(); });
 
 
+
+/* ---------- Relatórios ---------- */
+const RL_TIPOS={briefing:"Briefing",resumo:"Resumo da manhã",maisodonto:"MaisOdonto",aprovacoes:"Aprovações",fechamento:"Fechamento",semanal:"Semana",diario:"Diário","ideia-saas":"Ideia de SaaS",prototipo:"Protótipo",producao:"Produção"};
+const RL_ORDEM=["resumo","briefing","maisodonto","aprovacoes","fechamento","semanal","ideia-saas","prototipo","producao","diario"];
+S.rlDias=[]; S.rlDia=null; S.rlTipo="todos"; S.rlRows=[]; S.rlAbertos=new Set();
+function diaLabel(iso){ const d=new Date(iso+"T12:00:00-03:00"); const hoje=hojeISO(); const ontem=new Date(Date.now()-864e5).toLocaleDateString("en-CA",{timeZone:TZ});
+  const base=fmt(d,{weekday:"short",day:"2-digit",month:"2-digit"}).replace(".",""); return iso===hoje?"Hoje · "+base:iso===ontem?"Ontem · "+base:base; }
+async function loadRelatorios(){
+  try{
+    const rows=await q(sb.from("jv_relatorios").select("dia").order("dia",{ascending:false}).limit(2000));
+    S.rlDias=[...new Set(rows.map(r=>r.dia))];
+    if(!S.rlDias.length){ $("#rlList").replaceChildren(el("div",{class:"empty",text:"Nenhum relatório ainda. O briefing, o resumo das 8h, o relatório do MaisOdonto e o fechamento das 22h aparecem aqui todo dia."})); $("#rlDia").replaceChildren(); return; }
+    if(!S.rlDia||!S.rlDias.includes(S.rlDia)) S.rlDia=S.rlDias[0];
+    const sel=$("#rlDia"); sel.replaceChildren(...S.rlDias.map(d=>{ const o=el("option",{value:d,text:diaLabel(d)}); if(d===S.rlDia) o.selected=true; return o; }));
+    await loadDiaRel();
+  }catch(e){ erroBox("#rlList","Não consegui carregar os relatórios: "+errMsg(e)); }
+}
+async function loadDiaRel(){
+  const i=S.rlDias.indexOf(S.rlDia); $("#rlPrev").disabled=i>=S.rlDias.length-1; $("#rlNext").disabled=i<=0;
+  $("#rlDia").value=S.rlDia;
+  S.rlRows=await q(sb.from("jv_relatorios").select("*").eq("dia",S.rlDia));
+  S.rlRows.sort((a,b)=>(RL_ORDEM.indexOf(a.tipo)-RL_ORDEM.indexOf(b.tipo))||(a.atualizado_em<b.atualizado_em?1:-1));
+  renderRelatorios();
+}
+function mdNodes(txt){
+  const out=[]; let ul=null, pre=null;
+  const inline=line=>{ const frag=document.createDocumentFragment(); const re=/(https?:\/\/[^\s)]+)|\*\*([^*]+)\*\*/g; let last=0,m;
+    while((m=re.exec(line))){ if(m.index>last) frag.append(line.slice(last,m.index)); if(m[1]) frag.append(el("a",{href:m[1],target:"_blank",rel:"noopener",text:m[1].length>60?m[1].slice(0,57)+"…":m[1]})); else frag.append(el("b",{text:m[2]})); last=re.lastIndex; }
+    if(last<line.length) frag.append(line.slice(last)); return frag; };
+  for(const raw of String(txt||"").split("\n")){
+    const line=raw.replace(/\s+$/,"");
+    if(/^\s*\|/.test(line)){ if(!pre){ pre=el("pre"); out.push(pre); } if(!/^\s*\|\s*-/.test(line)) pre.append(line.replace(/^\s*\||\|\s*$/g,"").split("|").map(c=>c.trim()).join("  ·  ")+"\n"); ul=null; continue; }
+    pre=null;
+    if(!line.trim()){ ul=null; continue; }
+    const h=line.match(/^#{1,6}\s+(.*)/); if(h){ ul=null; out.push(el("h4",{},inline(h[1]))); continue; }
+    const li=line.match(/^\s*(?:[-*]|\d+\.)\s+(?:\[( |x)\]\s*)?(.*)/i);
+    if(li){ if(!ul){ ul=el("ul"); out.push(ul); } ul.append(el("li",{},li[1]?(li[1].toLowerCase()==="x"?"[feito] ":"[ ] "):"",inline(li[2]))); continue; }
+    ul=null; out.push(el("p",{},inline(line)));
+  }
+  return out;
+}
+function renderRelatorios(){
+  const tiposDia=[...new Set(S.rlRows.map(r=>r.tipo))];
+  if(S.rlTipo!=="todos"&&!tiposDia.includes(S.rlTipo)) S.rlTipo="todos";
+  const chips=$("#rlTipos"); chips.replaceChildren(...["todos",...tiposDia].map(t=>{ const n=t==="todos"?S.rlRows.length:S.rlRows.filter(r=>r.tipo===t).length;
+    const c=el("button",{class:"chip","aria-pressed":String(S.rlTipo===t),text:(t==="todos"?"Todos":(RL_TIPOS[t]||t))+" "+n}); c.addEventListener("click",()=>{ S.rlTipo=t; renderRelatorios(); }); return c; }));
+  $("#rlMeta").textContent=`${S.rlRows.length} relatório${S.rlRows.length===1?"":"s"}`;
+  const box=$("#rlList"); box.replaceChildren();
+  const list=S.rlRows.filter(r=>S.rlTipo==="todos"||r.tipo===S.rlTipo);
+  if(!list.length){ box.append(el("div",{class:"empty",text:"Nada neste dia."})); return; }
+  for(const r of list){
+    const aberto=S.rlAbertos.has(r.id)||list.length===1;
+    const body=el("div",{class:"rl-body"+(aberto?"":" fold")},...mdNodes(r.conteudo));
+    const bAbrir=el("button",{class:"btn",text:aberto?"Recolher":"Ler tudo"}); bAbrir.addEventListener("click",()=>{ S.rlAbertos.has(r.id)?S.rlAbertos.delete(r.id):S.rlAbertos.add(r.id); renderRelatorios(); });
+    const bCop=el("button",{class:"btn",text:"Copiar"}); bCop.addEventListener("click",()=>copiar(r.conteudo,bCop));
+    const bOuv=el("button",{class:"btn",text:"Ouvir"}); bOuv.addEventListener("click",()=>falar(r.titulo+". "+r.conteudo.replace(/https?:\/\/\S+/g,"").slice(0,1400)));
+    box.append(el("article",{class:"rl-card"},
+      el("div",{class:"hd"}, el("div",{}, el("h3",{text:r.titulo}), el("div",{class:"when",text:"atualizado "+dataHora(r.atualizado_em)})), el("span",{class:"tag",text:RL_TIPOS[r.tipo]||r.tipo})),
+      body, el("div",{class:"acts"}, list.length>1?bAbrir:null, bCop, bOuv)));
+  }
+}
+$("#rlDia").addEventListener("change",e=>{ S.rlDia=e.target.value; S.rlAbertos.clear(); loadDiaRel(); });
+$("#rlPrev").addEventListener("click",()=>{ const i=S.rlDias.indexOf(S.rlDia); if(i<S.rlDias.length-1){ S.rlDia=S.rlDias[i+1]; S.rlAbertos.clear(); loadDiaRel(); } });
+$("#rlNext").addEventListener("click",()=>{ const i=S.rlDias.indexOf(S.rlDia); if(i>0){ S.rlDia=S.rlDias[i-1]; S.rlAbertos.clear(); loadDiaRel(); } });
 /* ---------- menu Mais (celular) ---------- */
-const SEC=["briefing","maisodonto","saas","lembretes","rotina","memoria"];
+const SEC=["vendas","briefing","maisodonto","saas","lembretes","rotina","memoria"];
 function abrirMais(on){ $("#maisSheet").hidden=!on; $("#maisBg").hidden=!on; $("#tabMais").setAttribute("aria-expanded",String(on)); if(on) $("#maisSheet button")?.focus(); }
 $("#tabMais").addEventListener("click",()=>abrirMais($("#maisSheet").hidden));
 $("#maisBg").addEventListener("click",()=>abrirMais(false));
