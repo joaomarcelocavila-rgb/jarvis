@@ -187,6 +187,43 @@ td.r,th.r{text-align:right}
 .mf small{color:var(--mute);font-size:10.5px}
 .memview{max-height:64vh;overflow:auto}
 .memarea{width:100%;box-sizing:border-box;min-height:58vh;font-family:var(--f-data);font-size:13px;line-height:1.6}
+.frame.noclip{clip-path:none;position:relative;z-index:5}
+.dd-row{display:flex;gap:10px;flex-wrap:wrap}
+.dd{position:relative}
+.dd-btn{all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:10px;min-width:200px;box-sizing:border-box;padding:10px 12px;border:1px solid var(--line-hi);background:rgba(3,10,16,.8);border-radius:2px;font-family:var(--f-display);font-size:14px;color:var(--ice);transition:box-shadow .2s,border-color .2s}
+.dd-btn:hover{box-shadow:0 0 16px rgba(73,230,255,.18)}
+.dd-btn:focus-visible{outline:1px solid var(--cyan);outline-offset:2px}
+.dd-k{font-family:var(--f-data);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan-dim)}
+.dd-v{flex:1;font-weight:600;letter-spacing:.03em}
+.dd-btn svg{width:16px;height:16px;stroke:var(--cyan);fill:none;stroke-width:2;transition:transform .2s}
+.dd-btn[aria-expanded="true"] svg{transform:rotate(180deg)}
+.dd-menu{position:absolute;z-index:30;top:calc(100% + 6px);left:0;min-width:100%;margin:0;padding:6px;list-style:none;background:#06121c;border:1px solid var(--line-hi);box-shadow:0 12px 40px rgba(0,0,0,.6),0 0 24px rgba(73,230,255,.12);border-radius:2px}
+.dd-menu li{padding:10px 12px;cursor:pointer;font-size:14px;color:var(--ice);border-radius:2px;display:flex;align-items:center;gap:10px}
+.dd-menu li::before{content:"";width:6px;height:6px;border-radius:50%;border:1px solid var(--cyan-dim)}
+.dd-menu li[aria-selected="true"]{color:var(--cyan)}
+.dd-menu li[aria-selected="true"]::before{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.dd-menu li:hover,.dd-menu li.act{background:rgba(73,230,255,.1)}
+.ld-filters{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.ld-filters .ger-filter{margin:0}
+.ld-filters input{max-width:420px}
+.leads{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr));gap:14px}
+.lead{border:1px solid var(--line);background:var(--panel);padding:16px;border-radius:2px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.lead .hd{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:start}
+.lead h3{margin:0;font-family:var(--f-display);font-weight:600;font-size:17px;line-height:1.25}
+.lead .perfil{font-size:12.5px;color:var(--mute);margin-top:3px}
+.neg{font-family:var(--f-data);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:2px 8px;border-radius:10px;border:1px solid;white-space:nowrap}
+.neg.maisodonto{color:#5cf2a6;border-color:rgba(92,242,166,.45)}
+.neg.seo-geo{color:var(--cyan);border-color:var(--line-hi)}
+.neg.sites{color:var(--amber);border-color:rgba(255,178,61,.45)}
+.lead .contato{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--f-data);font-size:12.5px}
+.lead .contato a{color:var(--ice);text-decoration:none;border-bottom:1px dotted var(--line-hi)}
+.lead .contato .tel{color:var(--ice)}
+.msgbox{background:rgba(3,10,16,.7);border:1px solid var(--line);padding:10px 12px;font-size:13.5px;line-height:1.55;white-space:pre-wrap;overflow-wrap:anywhere;max-height:180px;overflow:auto}
+.lead .why{font-size:12.5px;color:var(--mute)}
+.lead .why a{color:var(--cyan-dim)}
+.lead .acts{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lead select{padding:6px 8px;font-size:12.5px}
+.lead .when{font-family:var(--f-data);font-size:11px;color:var(--mute);margin-left:auto}
 .ger-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
 .ger-filter .chip[aria-pressed="true"]{color:var(--cyan);border-color:var(--line-hi);background:rgba(73,230,255,.08)}
 .ideas{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr));gap:14px}
@@ -228,6 +265,7 @@ td.r,th.r{text-align:right}
     <button class="tab" role="tab" data-v="maisodonto" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M7 3c-2.5 0-4 2-4 4.5 0 3 1.5 4 2 7s1 6.5 2.5 6.5S9 17 12 17s3.5 4 5 4 2-3.5 2.5-6.5 2-4 2-7C21.5 5 20 3 17 3c-2 0-3 1-5 1S9 3 7 3z"/></svg>Odonto</button>
     <button class="tab" role="tab" data-v="lembretes" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 004 0"/></svg>Lembretes<span class="badge" id="badgeLem" hidden>0</span></button>
     <button class="tab" role="tab" data-v="rotina" aria-selected="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Rotina</button>
+    <button class="tab" role="tab" data-v="leads" aria-selected="false"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3 3 0 010 6M18 14c2 .7 3 2.8 3 6"/></svg>Leads<span class="badge" id="badgeLeads" hidden>0</span></button>
     <button class="tab" role="tab" data-v="gerar" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Gerar<span class="badge" id="badgeGer" hidden>0</span></button>
     <button class="tab" role="tab" data-v="saas" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>SaaS</button>
     <button class="tab" role="tab" data-v="memoria" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8 12h8M8 16h6"/></svg>Memória<span class="badge" id="badgeApr" hidden>0</span></button>
@@ -363,6 +401,39 @@ td.r,th.r{text-align:right}
         </div>
       </div>
     </section>
+    <!-- LEADS -->
+    <section class="view" id="v-leads" hidden>
+      <div class="grid">
+        <div class="frame noclip">
+          <div class="ph"><h2>Leads captados</h2><span class="meta" id="ldMeta"></span></div>
+          <div class="kpis" id="ldKpis"></div>
+          <div class="ld-filters">
+            <div class="dd-row">
+              <div class="dd" id="ddNeg" data-label="Negócio">
+                <button class="dd-btn" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="dd-k">Negócio</span><span class="dd-v">Todos</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="dd-menu" role="listbox" hidden>
+                  <li role="option" data-v="todos" aria-selected="true">Todos</li>
+                  <li role="option" data-v="maisodonto" aria-selected="false">MaisOdonto</li>
+                  <li role="option" data-v="seo-geo" aria-selected="false">Gerador de SEO</li>
+                </ul>
+              </div>
+              <div class="dd" id="ddSt" data-label="Status">
+                <button class="dd-btn" type="button" aria-haspopup="listbox" aria-expanded="false"><span class="dd-k">Status</span><span class="dd-v">Para abordar</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+                <ul class="dd-menu" role="listbox" hidden>
+                  <li role="option" data-v="abertos" aria-selected="true">Para abordar</li>
+                  <li role="option" data-v="enviado" aria-selected="false">Abordados</li>
+                  <li role="option" data-v="respondeu" aria-selected="false">Responderam</li>
+                  <li role="option" data-v="todos" aria-selected="false">Todos</li>
+                </ul>
+              </div>
+            </div>
+            <label for="ldBusca" class="sr">Buscar lead</label><input type="text" id="ldBusca" placeholder="Buscar por nome, bairro, telefone">
+          </div>
+        </div>
+        <div class="leads" id="ldList"><div class="frame"><div class="empty">Nenhum lead ainda. Os turnos de prospecção (00h, 02h e 04h) preenchem esta lista com telefone, Instagram e a mensagem pronta.</div></div></div>
+      </div>
+    </section>
+
     <!-- GERAR -->
     <section class="view" id="v-gerar" hidden>
       <div class="grid">
@@ -480,7 +551,7 @@ tick(); setInterval(tick,1000);
 })();
 
 /* ---------- navegação ---------- */
-const views=["nucleo","briefing","vendas","maisodonto","lembretes","rotina","gerar","saas","memoria"];
+const views=["nucleo","briefing","vendas","maisodonto","lembretes","rotina","leads","gerar","saas","memoria"];
 function show(v){
   for(const id of views){ $("#v-"+id).hidden = id!==v; }
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected", String(t.dataset.v===v)));
@@ -809,6 +880,77 @@ function renderSaas(){
   }
 }
 
+/* ---------- Leads ---------- */
+S.leads=[]; S.ldNeg="todos"; S.ldSt="abertos";
+const NEG_NOME={maisodonto:"MaisOdonto","seo-geo":"Gerador de SEO",sites:"Sites"};
+const ST_NOME={novo:"para abordar",enviado:"abordado",respondeu:"respondeu",negociando:"negociando",fechou:"fechou",perdido:"perdido"};
+const digitos=s=>String(s||"").replace(/\D/g,"");
+function telFmt(t){ let d=digitos(t); if(d.startsWith("55")&&d.length>11) d=d.slice(2); if(d.length===11) return `(${d.slice(0,2)}) ${d.slice(2,7)}-${d.slice(7)}`; if(d.length===10) return `(${d.slice(0,2)}) ${d.slice(2,6)}-${d.slice(6)}`; return t||""; }
+function waLink(t,msg){ let d=digitos(t); if(!d) return null; if(!d.startsWith("55")) d="55"+d; return "https://wa.me/"+d+(msg?"?text="+encodeURIComponent(msg):""); }
+function igLink(i){ if(!i) return null; if(/^https?:/.test(i)) return i; return "https://instagram.com/"+String(i).replace(/^@/,""); }
+async function copiar(txt,btn){ try{ await navigator.clipboard.writeText(txt); const o=btn.textContent; btn.textContent="Copiado"; setTimeout(()=>btn.textContent=o,1500); }catch{ const r=document.createRange(); const box=btn.closest(".lead")?.querySelector(".msgbox"); if(box){ r.selectNodeContents(box); const s=getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent="Texto selecionado"; } } }
+async function setStatus(l,st){ try{ await S.db.doc("leads/"+l.id).update({ status:st, atualizado_em:new Date().toISOString(), ...(st==="enviado"?{abordado_em:new Date().toISOString(), abordado_por:"senhor"}:{}) }); }catch(e){ $("#ldMeta").textContent="Não consegui salvar: "+(e?.message||e?.code||"erro"); } }
+function renderLeads(){
+  const all=[...S.leads].sort((a,b)=>(b.criado_em||"")>(a.criado_em||"")?1:-1);
+  const hoje=hojeISO(); const abertos=all.filter(l=>(l.status||"novo")==="novo");
+  $("#badgeLeads").hidden=!abertos.length; $("#badgeLeads").textContent=abertos.length;
+  $("#ldMeta").textContent=`${all.length} lead${all.length===1?"":"s"}`;
+  const deHoje=all.filter(l=>l.criado_em&&fmt(new Date(l.criado_em),{year:"numeric",month:"2-digit",day:"2-digit"}).split("/").reverse().join("-")===hoje).length;
+  $("#ldKpis").replaceChildren(tile("Para abordar",String(abertos.length)), tile("Novos hoje",String(deHoje)), tile("MaisOdonto",String(all.filter(l=>l.negocio==="maisodonto").length)), tile("Gerador de SEO",String(all.filter(l=>l.negocio==="seo-geo").length)), tile("Responderam",String(all.filter(l=>["respondeu","negociando","fechou"].includes(l.status)).length)));
+  const q=($("#ldBusca").value||"").toLowerCase().trim();
+  let list=all.filter(l=>S.ldNeg==="todos"||l.negocio===S.ldNeg);
+  if(S.ldSt==="abertos") list=list.filter(l=>(l.status||"novo")==="novo");
+  else if(S.ldSt==="enviado") list=list.filter(l=>l.status==="enviado");
+  else if(S.ldSt==="respondeu") list=list.filter(l=>["respondeu","negociando","fechou"].includes(l.status));
+  if(q) list=list.filter(l=>[l.nome,l.perfil,l.cidade,l.telefone,l.instagram,l.email].join(" ").toLowerCase().includes(q));
+  const box=$("#ldList"); box.replaceChildren();
+  if(!list.length){ box.append(el("div",{class:"frame"}, el("div",{class:"empty",text: all.length?"Nenhum lead neste filtro.":"Nenhum lead ainda. Os turnos de prospecção (00h, 02h e 04h) preenchem esta lista com telefone, Instagram e a mensagem pronta."}))); return; }
+  for(const l of list.slice(0,200)){
+    const wa=l.telefone?waLink(l.telefone,l.mensagem):null; const ig=igLink(l.instagram);
+    const contato=el("div",{class:"contato"});
+    if(l.telefone) contato.append(el("span",{class:"tel",text:telFmt(l.telefone)+(l.whatsapp?" · WhatsApp":"")}));
+    if(ig) contato.append(el("a",{href:ig,target:"_blank",rel:"noopener",text:"@"+String(l.instagram).replace(/^https?:\/\/(www\.)?instagram\.com\//,"").replace(/^@/,"").replace(/\/$/,"")}));
+    if(l.email) contato.append(el("span",{text:l.email}));
+    if(l.site) contato.append(el("a",{href:/^https?:/.test(l.site)?l.site:"https://"+l.site,target:"_blank",rel:"noopener",text:"site"}));
+    const acts=el("div",{class:"acts"});
+    if(l.mensagem){ const b=el("button",{class:"btn",text:"Copiar mensagem"}); b.addEventListener("click",()=>copiar(l.mensagem,b)); acts.append(b); }
+    if(wa&&l.whatsapp!==false) acts.append(el("a",{class:"btn solid",href:wa,target:"_blank",rel:"noopener",text:"Abrir WhatsApp"}));
+    else if(ig) acts.append(el("a",{class:"btn",href:ig,target:"_blank",rel:"noopener",text:"Abrir Instagram"}));
+    const sel=el("select",{"aria-label":"Status de "+l.nome}); for(const [k,v] of Object.entries(ST_NOME)){ const o=el("option",{value:k,text:v}); if((l.status||"novo")===k) o.selected=true; sel.append(o); }
+    sel.addEventListener("change",()=>setStatus(l,sel.value)); acts.append(sel);
+    const quando = l.email_enviado_em ? "e-mail automático "+fmt(new Date(l.email_enviado_em),{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}) : l.criado_em ? "captado "+fmt(new Date(l.criado_em),{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit",hour12:false}) : "";
+    acts.append(el("span",{class:"when",text:quando}));
+    box.append(el("article",{class:"lead"},
+      el("div",{class:"hd"}, el("div",{}, el("h3",{text:l.nome||"Sem nome"}), el("div",{class:"perfil",text:[l.perfil,l.cidade].filter(Boolean).join(" · ")})), el("span",{class:"neg "+(l.negocio||""),text:NEG_NOME[l.negocio]||l.negocio||"—"})),
+      contato,
+      l.mensagem?el("div",{class:"msgbox",text:l.mensagem}):null,
+      (l.motivo||l.fonte)?el("div",{class:"why"}, l.motivo?document.createTextNode(l.motivo+" "):null, l.fonte?el("a",{href:l.fonte,target:"_blank",rel:"noopener",text:"(fonte)"}):null):null,
+      acts));
+  }
+}
+function dropdown(id,onPick){
+  const root=$(id), btn=root.querySelector(".dd-btn"), menu=root.querySelector(".dd-menu"), items=[...menu.querySelectorAll("li")];
+  let idx=0;
+  const close=()=>{ menu.hidden=true; btn.setAttribute("aria-expanded","false"); items.forEach(i=>i.classList.remove("act")); };
+  const open=()=>{ document.querySelectorAll(".dd-menu").forEach(m=>{ if(m!==menu){ m.hidden=true; m.previousElementSibling.setAttribute("aria-expanded","false"); } }); menu.hidden=false; btn.setAttribute("aria-expanded","true"); idx=Math.max(0,items.findIndex(i=>i.getAttribute("aria-selected")==="true")); items.forEach((i,k)=>i.classList.toggle("act",k===idx)); };
+  const pick=li=>{ items.forEach(i=>i.setAttribute("aria-selected",String(i===li))); btn.querySelector(".dd-v").textContent=li.textContent; close(); btn.focus(); onPick(li.dataset.v); };
+  btn.addEventListener("click",e=>{ e.stopPropagation(); menu.hidden?open():close(); });
+  items.forEach(li=>li.addEventListener("click",e=>{ e.stopPropagation(); pick(li); }));
+  btn.addEventListener("keydown",e=>{
+    if(menu.hidden && (e.key==="ArrowDown"||e.key==="Enter"||e.key===" ")){ e.preventDefault(); open(); return; }
+    if(menu.hidden) return;
+    if(e.key==="ArrowDown"){ e.preventDefault(); idx=(idx+1)%items.length; }
+    else if(e.key==="ArrowUp"){ e.preventDefault(); idx=(idx-1+items.length)%items.length; }
+    else if(e.key==="Enter"||e.key===" "){ e.preventDefault(); pick(items[idx]); return; }
+    else if(e.key==="Escape"||e.key==="Tab"){ close(); return; }
+    items.forEach((i,k)=>i.classList.toggle("act",k===idx));
+  });
+  document.addEventListener("click",close);
+}
+dropdown("#ddNeg",v=>{ S.ldNeg=v; renderLeads(); });
+dropdown("#ddSt",v=>{ S.ldSt=v; renderLeads(); });
+$("#ldBusca").addEventListener("input",()=>renderLeads());
+
 /* ---------- Agenda do Jarvis ---------- */
 S.agenda=null;
 const AG_ORDEM=["Briefing do Jarvis","Relatório MaisOdonto","Turno do Jarvis","Ideias de SaaS","Gerador de SaaS"];
@@ -989,9 +1131,10 @@ document.querySelectorAll(".chip").forEach(c=>c.addEventListener("click",()=>{ s
   db.collection("rotina").onSnapshot(s=>{ S.rotina=s.docs.map(d=>({id:d.id,...d.data()})); renderRotina(); });
   db.doc("rotina_dia/"+hojeISO()).onSnapshot(s=>{ S.checks=(s.exists&&s.data().feitos)||{}; renderRotina(); });
   db.collection("memoria").onSnapshot(s=>{ S.mem=s.docs.map(d=>d.data()).filter(d=>d&&d.path); renderMem(); renderSaas(); renderGerar(); });
+  db.collection("leads").onSnapshot(s=>{ S.leads=s.docs.map(d=>({id:d.id,...d.data()})); renderLeads(); });
   db.collection("saas_geracoes").onSnapshot(s=>{ S.ger={}; s.docs.forEach(d=>{ S.ger[d.id]=d.data(); }); renderGerar(); });
   db.doc("config/maisodonto").onSnapshot(s=>{ if(s.exists&&Array.isArray(s.data().ignorar)){ S.ignorar=s.data().ignorar; renderIgn(); } });
 })();
-renderLembretes(); renderRotina();
+renderLembretes(); renderRotina(); renderLeads();
 })();
 </script>

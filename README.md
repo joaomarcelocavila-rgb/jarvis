@@ -1,6 +1,6 @@
 # J.A.R.V.I.S.
 
-Assistente pessoal que trabalha em turnos para vários negócios ao mesmo tempo: briefing de mercado, vendas do Asaas, relatório do MaisOdonto, lembretes, rotina, memória que evolui e uma fábrica de ideias de SaaS.
+Assistente pessoal que trabalha em turnos para vários negócios ao mesmo tempo. Abas do painel: Núcleo (conversa e voz), Briefing, Vendas (Asaas), Odonto (relatório do MaisOdonto), Lembretes, Rotina, Leads (captados com telefone e mensagem pronta), Gerar (ideias de SaaS e protótipos), SaaS (placar) e Memória.
 
 Este repositório guarda só o código.
 
