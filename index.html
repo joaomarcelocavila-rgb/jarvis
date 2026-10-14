@@ -272,6 +272,7 @@ td.r,th.r{text-align:right}
 .idea .como{margin:0 0 10px;padding-left:20px;font-size:13.5px;line-height:1.55;color:var(--ice)}
 .idea .como li{margin:3px 0}
 .idea .como li::marker{color:var(--cyan);font-family:var(--f-data)}
+.prompt-box{flex-basis:100%;max-height:60vh;overflow:auto;white-space:pre-wrap;font-size:12px;line-height:1.55;margin-top:10px}
 /* ---------- relatórios ---------- */
 .rl-nav{display:flex;gap:8px;align-items:center;margin-bottom:14px}
 .rl-nav select{flex:1;min-width:0;text-transform:capitalize}
@@ -416,7 +417,7 @@ html,body{margin:0}
     <input type="password" id="lgSenha" autocomplete="current-password" placeholder="senha" required>
     <button class="btn solid" type="submit" id="lgBtn">Entrar</button>
     <div id="lgMsg"></div>
-    <p class="small">Versão 8</p>
+    <p class="small">Versão 9</p>
     <p class="small">Use o mesmo login da sua conta de administrador do MaisOdonto.</p>
   </form>
 </div>
@@ -498,7 +499,7 @@ html,body{margin:0}
           </div>
           <div class="frame">
             <div class="ph"><h2>Conta</h2></div>
-            <div class="status-list"><div><span>Login</span><span id="stUser" class="ok">—</span></div><div><span>Dados</span><span id="stDb" class="off">verificando</span></div><div><span>Versão</span><span class="ok">8</span></div></div>
+            <div class="status-list"><div><span>Login</span><span id="stUser" class="ok">—</span></div><div><span>Dados</span><span id="stDb" class="off">verificando</span></div><div><span>Versão</span><span class="ok">9</span></div></div>
             <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="btnSair">Sair</button><a class="btn" href="https://claude.ai/artifact/TkgAXjkMhyTZJj5pkG93iA" target="_blank" rel="noopener">Conversar por texto (Claude)</a></div>
           </div>
         </aside>
@@ -1065,55 +1066,45 @@ function fichas(){
   }).sort((a,b)=>(b.quando+b.atualizado)>(a.quando+a.atualizado)?1:-1);
 }
 function promptIA(f){
-  const pronto=secao(f.conteudo,"Prompt para outras IAs"); if(pronto) return pronto;
-  return `Crie um SaaS web completo, pronto para uso, chamado provisoriamente "${f.titulo}".
+  const pronto=secao(f.conteudo,"Prompt para outras IAs"); if(pronto && pronto.length>600 && !/^\(Regra do senhor/.test(pronto)) return pronto;
+  const c=f.conteudo; const lin=t=>String(t||"").trim();
+  return `Você é um engenheiro full-stack sênior e designer de produto. Construa, completo e funcionando, o MVP de um SaaS chamado provisoriamente "${f.titulo}". Siga tudo abaixo à risca. Se algo não estiver especificado, escolha a opção mais simples e diga qual escolheu.
 
-O QUE É
-${f.oque||""}
+1. O QUE É
+${lin(f.oque)||lin(secao(c,"O que o nosso faria de diferente"))}
 
-COMO FUNCIONA
-${f.como||""}
+2. PARA QUEM E QUAL A DOR
+Público: ${lin(f.publico)}
+Dor: ${lin(f.dor)}
+Quanto custa para eles: ${lin(secao(c,"Quanto custa para eles"))||"não medido"}
+Como resolvem hoje: ${lin(secao(c,"Como resolvem hoje"))||"planilha, papel e WhatsApp"}
+Concorrentes: ${lin(secao(c,"Concorrentes e preço deles"))||"a pesquisar"}
 
-PÚBLICO
-${f.publico}
+3. COMO FUNCIONA (fluxo principal que precisa funcionar de ponta a ponta)
+${lin(f.como)||"Descreva e implemente o fluxo principal que resolve a dor acima em até 4 passos."}
+Escreva também 4 a 6 histórias de uso no formato "Como <usuário>, eu <ação> para <resultado>" e implemente todas.
 
-DOR QUE RESOLVE
-${f.dor}
+4. TELAS
+Projete e implemente todas as telas necessárias para as histórias acima: entrar/criar conta, tela principal que resolve a dor, cadastro e edição dos registros, lista com busca e filtros, painel com os números que o dono mais precisa ver, configurações da conta e assinatura. Para cada tela, defina campos (tipo, obrigatório, máscara, validação), ações e estados de carregando, vazio e erro.
 
-COMO RESOLVEM HOJE
-${secao(f.conteudo,"Como resolvem hoje")||"Planilha, papel e WhatsApp."}
+5. REGRAS DE NEGÓCIO
+O que o produto faz de diferente: ${lin(secao(c,"O que o nosso faria de diferente"))}
+Defina status e transições, cálculos (com fórmula visível para o usuário), prazos e lembretes. Datas no fuso America/Recife. Dinheiro em numeric(12,2), exibido como R$ 1.234,56. Teste grátis de 14 dias; sem assinatura ativa, o app fica somente leitura com aviso.
 
-CONCORRENTES
-${secao(f.conteudo,"Concorrentes e preço deles")||"A pesquisar."}
+6. MODELO DE DADOS (Postgres / Supabase)
+Crie as tabelas com colunas, tipos, chaves e índices. Use conta/organização com membros quando mais de uma pessoa usar (dono e equipe). RLS em TODAS as tabelas: cada usuário só acessa os dados da própria conta. Tabela assinaturas (conta_id, asaas_customer_id, asaas_subscription_id, status, trial_ate, proximo_vencimento).
 
-O QUE O PRODUTO FAZ DE DIFERENTE
-${secao(f.conteudo,"O que o nosso faria de diferente")||"Resolver a dor principal com o mínimo de passos."}
+7. STACK
+React + Vite + TypeScript + Tailwind, React Router, TanStack Query, Zod, Recharts. Supabase (Auth com e-mail e link mágico, Postgres, RLS, Storage se houver arquivos, Edge Functions). Asaas para assinatura recorrente${f.preco?" (preço previsto: "+lin(f.preco).split("\n")[0].replace(/^[-\s]*/,"")+")":""}: Edge Function cria cliente e assinatura; webhook em Edge Function valida o token, grava log e atualiza a assinatura nos eventos PAYMENT_CONFIRMED, PAYMENT_RECEIVED, PAYMENT_OVERDUE e SUBSCRIPTION_DELETED. Chaves só em secrets. PWA instalável no celular.
 
-ESCOPO DO MVP
-- Cadastro e login por e-mail e senha.
-- A tela principal que resolve a dor acima, de ponta a ponta, com dados reais do usuário.
-- Painel inicial com os números que o usuário mais precisa ver.
-- Assinatura mensal${f.preco?" (preço previsto: "+f.preco.split("\n")[0].replace(/^[-\s]*/,"")+")":""}, com período de teste limitado.
-- Funcionar bem no celular e no computador.
+8. VISUAL (sem cara de IA)
+Identidade própria pensada para esse público, com paleta definida em códigos hex (uma cor principal, uma de alerta, neutros quentes), títulos e textos em fontes do Google Fonts com personalidade (nunca Inter nem Space Grotesk), cartões com borda fina e pouca sombra, botões grandes no celular. Proibido: emoji, gradiente roxo ou azul, ilustrações genéricas, frases como "revolucione" ou "tudo em um só lugar". Textos curtos em português do Brasil, com as palavras que o público usa.
 
-STACK
-- React + Vite + TypeScript + Tailwind.
-- Supabase (Postgres, Auth, Row Level Security em todas as tabelas: cada usuário só vê os próprios dados).
-- Asaas (assinatura recorrente via API v3 e webhook de pagamento confirmado para liberar o plano).
-- Deploy em Vercel ou Netlify.
+9. QUALIDADE
+Funciona em 360px de largura. Acessível (rótulos, contraste AA, teclado). Dados de exemplo (seed) realistas para demonstração. Não invente funções fora deste escopo.
 
-VISUAL (sem cara de IA)
-- Identidade própria para esse público, 1 cor de destaque, tipografia do Google Fonts com personalidade (não use Inter nem Space Grotesk).
-- Proibido: emoji, gradiente roxo/azul, ilustrações genéricas, cards todos iguais com sombra, frases como "revolucione" ou "tudo em um só lugar".
-- Textos em português do Brasil, diretos, na linguagem do público.
-
-ENTREGUE
-1. SQL do banco com as políticas de RLS.
-2. Código completo das telas.
-3. Integração com Asaas (cliente, assinatura, webhook).
-4. Passo a passo para publicar.
-
-Não invente funções fora deste escopo.`;
+10. ENTREGUE, NESTA ORDEM
+(1) SQL completo: tabelas, índices, funções, políticas RLS e seed. (2) Estrutura de pastas e código de todas as telas, componentes e hooks. (3) Edge Functions do Asaas e passo a passo para configurar o webhook no painel do Asaas (sandbox e produção). (4) .env.example e deploy (Supabase + Vercel ou Netlify). (5) Lista de testes manuais por história de uso.`;
 }
 async function loadPedidos(){ try{ const rows=await q(sb.from("jv_saas_pedidos").select("*")); S.ped=Object.fromEntries(rows.map(r=>[r.slug,r])); renderGerar(); }catch{} }
 const armados=new Set();
@@ -1143,7 +1134,10 @@ function renderGerar(){
     else { const b=el("button",{class:"btn",text:"Gerar"}); b.addEventListener("click",()=>gerar(f,b)); acts.append(b); if(g?.status==="erro") acts.append(el("span",{class:"gstate",style:"color:var(--red)",text:"falhou: "+(g.motivo||"tente de novo")})); }
     const bp=el("button",{class:"btn",text:"Copiar prompt"});
     bp.addEventListener("click",async()=>{ const t=promptIA(f); if(!await copiar(t,bp,"Prompt copiado")){ S.memSel=f.path; show("memoria"); renderMem(); $("#memMsg").replaceChildren(el("pre",{class:"report",text:t})); } });
-    acts.append(bp, el("button",{class:"x",text:"ver ficha",onclick:()=>{ S.memSel=f.path; show("memoria"); renderMem(); }}));
+    const bv=el("button",{class:"btn",text:"Ver prompt"});
+    const caixa=el("pre",{class:"report prompt-box",hidden:true});
+    bv.addEventListener("click",()=>{ if(caixa.hidden){ caixa.textContent=promptIA(f); caixa.hidden=false; bv.textContent="Esconder prompt"; } else { caixa.hidden=true; bv.textContent="Ver prompt"; } });
+    acts.append(bv, bp, el("button",{class:"x",text:"ver ficha",onclick:()=>{ S.memSel=f.path; show("memoria"); renderMem(); }}), caixa);
     box.append(el("article",{class:"idea"+(md>=7?" hot":"")},
       el("div",{class:"top"}, el("div",{}, el("h3",{text:f.titulo}), el("div",{class:"who",text:[f.quando?f.quando.split("-").reverse().join("/"):"",f.status].filter(Boolean).join(" · ")})), el("div",{class:"score "+cls}, md==null?"—":md.toFixed(2).replace(".",","), el("small",{text:"NOTA"}))),
       f.oque?el("p",{class:"oque",text:f.oque.replace(/\s+/g," ")}):null,
