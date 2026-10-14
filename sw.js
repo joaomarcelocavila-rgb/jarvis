@@ -1,5 +1,5 @@
 // Service worker mínimo: guarda a tela de entrada para abrir rápido e funcionar offline.
-const CACHE = "jarvis-v6";
+const CACHE = "jarvis-v7";
 const ARQUIVOS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", (e) => {
@@ -16,7 +16,7 @@ self.addEventListener("fetch", (e) => {
   const url = new URL(e.request.url);
   if (e.request.method !== "GET" || url.origin !== location.origin) return;
   e.respondWith(
-    fetch(e.request)
+    fetch(e.request, { cache: "no-store" })
       .then((r) => {
         const copia = r.clone();
         caches.open(CACHE).then((c) => c.put(e.request, copia));
