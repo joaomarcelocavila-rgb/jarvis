@@ -22,7 +22,7 @@ Este repositório guarda só o código.
 ## Como funciona
 
 - **App** (`index.html`): login com Supabase Auth, lê e grava nas tabelas `jv_*` (leads, memória, lembretes, rotina, briefing, config, pedidos de SaaS) e chama as funções `jv_vendas` e `jv_relatorio_maisodonto`. A voz usa o widget do ElevenLabs, com o id do agente lido do banco depois do login. O botão Gerar coloca a ideia na fila `jv_saas_pedidos`, e a tarefa Gerador constrói o protótipo em até 1 hora. Não tem conversa por texto: essa fica no painel do claude.ai.
-- **Painel** (`painel/jarvis.html`): roda como artifact no claude.ai. Ele depende das capacidades do runtime de artifacts (`window.claude.use`): `sample` para a conversa, `db` para lembretes, rotina, briefing e memória, e `mcp` para o Supabase (`execute_sql`) e as tarefas agendadas (`fire_trigger`, `list_triggers`). **Aberto direto do GitHub Pages ele carrega o visual, mas as funções ficam desligadas.**
+- **Painel** (`painel/jarvis.html`): roda como artifact no claude.ai. Ele depende das capacidades do runtime de artifacts (`window.claude.use`): `sample` para a conversa, e `mcp` para o Supabase (`execute_sql`, lendo e gravando nas mesmas tabelas `jv_*` do app) e as tarefas agendadas (`fire_trigger`, `list_triggers`). **Aberto direto do GitHub Pages ele carrega o visual, mas as funções ficam desligadas.**
 - **Vendas**: o webhook do Asaas chama a função `jarvis-asaas`, que grava em `jarvis.vendas`. O painel lê essa tabela só com SELECT.
 - **Tarefas agendadas** (prompts em `tarefas/`):
   - Briefing: todo dia às 6h56.
