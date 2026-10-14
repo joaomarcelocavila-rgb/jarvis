@@ -1,0 +1,73 @@
+name: App iPhone
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["ios-app/**", "ios-assets/**", ".github/workflows/ios.yml"]
+
+permissions:
+  contents: write
+
+jobs:
+  ipa:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar Capacitor
+        working-directory: ios-app
+        run: npm install --no-audit --no-fund
+
+      - name: Criar projeto iOS
+        working-directory: ios-app
+        run: |
+          npx cap add ios
+          npx cap sync ios
+
+      - name: Icone, tela de abertura e permissoes
+        run: |
+          set -e
+          A=ios-app/ios/App/App
+          ICON_DIR=$A/Assets.xcassets/AppIcon.appiconset
+          for f in $(python3 -c "import json;print(' '.join(i['filename'] for i in json.load(open('$ICON_DIR/Contents.json'))['images'] if i.get('filename')))"); do
+            sips -z $(sips -g pixelHeight "$ICON_DIR/$f" | awk '/pixelHeight/{print $2}') $(sips -g pixelWidth "$ICON_DIR/$f" | awk '/pixelWidth/{print $2}') ios-assets/AppIcon-1024.png --out "$ICON_DIR/$f" >/dev/null
+          done
+          for f in $A/Assets.xcassets/Splash.imageset/*.png; do cp ios-assets/splash-2732.png "$f"; done
+          P=$A/Info.plist
+          pb() { /usr/libexec/PlistBuddy -c "Set :$1 $3" "$P" 2>/dev/null || /usr/libexec/PlistBuddy -c "Add :$1 $2 $3" "$P"; }
+          pb CFBundleDisplayName string Jarvis
+          pb NSMicrophoneUsageDescription string "O Jarvis usa o microfone para conversar com o senhor por voz."
+          pb UIStatusBarStyle string UIStatusBarStyleLightContent
+          pb UIViewControllerBasedStatusBarAppearance bool false
+          /usr/libexec/PlistBuddy -c "Delete :UISupportedInterfaceOrientations" "$P" 2>/dev/null || true
+          /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations array" "$P"
+          /usr/libexec/PlistBuddy -c "Add :UISupportedInterfaceOrientations:0 string UIInterfaceOrientationPortrait" "$P"
+          ls -la $ICON_DIR $A/Assets.xcassets/Splash.imageset
+
+      - name: Compilar (sem assinatura)
+        run: |
+          set -e
+          cd ios-app/ios/App
+          if [ -d App.xcworkspace ]; then SRC="-workspace App.xcworkspace"; else SRC="-project App.xcodeproj"; fi
+          xcodebuild $SRC -scheme App -configuration Release -sdk iphoneos \
+            -destination 'generic/platform=iOS' -derivedDataPath "$RUNNER_TEMP/build" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            MARKETING_VERSION=1.0 CURRENT_PROJECT_VERSION=$GITHUB_RUN_NUMBER build | tail -n 30
+          mkdir -p "$RUNNER_TEMP/ipa/Payload"
+          cp -R "$RUNNER_TEMP/build/Build/Products/Release-iphoneos/App.app" "$RUNNER_TEMP/ipa/Payload/"
+          cd "$RUNNER_TEMP/ipa" && zip -qry "$GITHUB_WORKSPACE/Jarvis.ipa" Payload
+          ls -la "$GITHUB_WORKSPACE/Jarvis.ipa"
+
+      - name: Publicar
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "ios-${GITHUB_RUN_NUMBER}" Jarvis.ipa \
+            --title "Jarvis para iPhone (versão ${GITHUB_RUN_NUMBER})" \
+            --notes "Instale com AltStore ou Sideloadly usando o seu Apple ID. O app abre o Jarvis em tela cheia e se atualiza sozinho: só precisa reinstalar a cada 7 dias (o AltStore renova automaticamente)." \
+            --latest

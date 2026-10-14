@@ -1,0 +1,15 @@
+{
+  "appId": "br.jarvis.joaomarcelo",
+  "appName": "Jarvis",
+  "webDir": "www",
+  "backgroundColor": "#03070c",
+  "server": {
+    "url": "https://joaomarcelocavila-rgb.github.io/jarvis/",
+    "errorPath": "erro.html"
+  },
+  "ios": {
+    "backgroundColor": "#03070c",
+    "contentInset": "never",
+    "limitsNavigationsToAppBoundDomains": false
+  }
+}
