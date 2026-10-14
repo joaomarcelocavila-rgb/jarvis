@@ -266,6 +266,43 @@ td.r,th.r{text-align:right}
 .st-pill.validada,.st-pill.no-ar{color:var(--green);border-color:rgba(92,242,166,.4)}
 .st-pill.descartada{color:var(--red);border-color:rgba(255,90,95,.4)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- celular ---------- */
+#vdTable,#saasTable{overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
+#vdTable table,#saasTable table{min-width:520px}
+main{overflow-x:clip}
+.view,.frame,.grid>*{min-width:0}
+.mob,.sheet,.sheet-bg{display:none}
+@media (max-width:820px){
+  html{-webkit-text-size-adjust:100%}
+  body{overscroll-behavior-y:none}
+  .rail{overflow:hidden;justify-content:space-around;padding:4px 4px calc(4px + env(safe-area-inset-bottom,0px));background:rgba(3,8,13,.96);backdrop-filter:blur(10px)}
+  .rail .tab{flex:1 1 0;width:auto;min-width:0;font-size:9.5px;padding:9px 0 7px;-webkit-tap-highlight-color:transparent}
+  .rail .tab.sec{display:none}
+  .rail .tab.mob{display:flex}
+  .tab .badge{right:calc(50% - 22px)}
+  .tab:hover{background:none;color:var(--mute)}
+  .tab[aria-selected="true"]:hover{color:var(--cyan);background:rgba(73,230,255,.1)}
+  .sheet-bg{display:block;position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.55)}
+  .sheet{display:block;position:fixed;left:0;right:0;bottom:0;z-index:31;background:#06111a;border-top:1px solid var(--line-hi);border-radius:16px 16px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 40px rgba(0,0,0,.6)}
+  .sheet[hidden],.sheet-bg[hidden]{display:none!important}
+  .sheet-grip{width:40px;height:4px;border-radius:2px;background:var(--line-hi);margin:0 auto 14px}
+  .sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .sheet-grid button{all:unset;position:relative;padding:16px 14px;border:1px solid var(--line);border-radius:10px;font-family:var(--f-display);font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--ice);background:rgba(73,230,255,.04);-webkit-tap-highlight-color:transparent}
+  .sheet-grid button[aria-current="true"]{border-color:var(--cyan);color:var(--cyan)}
+  .sheet-grid .badge{position:absolute;top:8px;right:10px;min-width:16px;height:16px;border-radius:8px;background:var(--amber);color:#1a0f00;font:700 10px/16px var(--f-data);text-align:center;padding:0 4px}
+  main{padding-top:calc(12px + env(safe-area-inset-top,0px));padding-inline:16px;padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+  .hud{grid-template-columns:52px minmax(0,1fr) auto;gap:12px;margin-bottom:16px}
+  .reactor{width:52px}
+  .greet .eyebrow,.greet p{display:none}
+  .greet h1{font-size:20px;margin:0}
+  .clock{grid-column:auto;text-align:right;display:block}
+  .clock .t{font-size:18px}
+  .clock .d,.clock .sys{display:none}
+  input,select,textarea{font-size:16px!important}
+  .btn{min-height:40px}
+  .frame{padding:16px 14px}
+}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 [hidden]{display:none!important}
 .login{position:fixed;inset:0;z-index:5;display:grid;place-items:center;padding:24px 16px;overflow:auto}
@@ -303,15 +340,28 @@ td.r,th.r{text-align:right}
     <div class="mark">J.A.R.V.I.S.</div>
     <button class="tab" role="tab" data-v="nucleo" aria-selected="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 1v3M12 20v3M1 12h3M20 12h3"/></svg>Núcleo</button>
     <button class="tab" role="tab" data-v="leads" aria-selected="false"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><path d="M16 4.5a3 3 0 010 6M18 14c2 .7 3 2.8 3 6"/></svg>Leads<span class="badge" id="badgeLeads" hidden>0</span></button>
-    <button class="tab" role="tab" data-v="briefing" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 3 6-8 3 3"/><path d="M3 21h18"/></svg>Briefing</button>
+    <button class="tab sec" role="tab" data-v="briefing" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M3 17l5-6 4 3 6-8 3 3"/><path d="M3 21h18"/></svg>Briefing</button>
     <button class="tab" role="tab" data-v="vendas" aria-selected="false"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="1"/><circle cx="12" cy="12" r="2.5"/><path d="M6 9v.01M18 15v.01"/></svg>Vendas</button>
-    <button class="tab" role="tab" data-v="maisodonto" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M7 3c-2.5 0-4 2-4 4.5 0 3 1.5 4 2 7s1 6.5 2.5 6.5S9 17 12 17s3.5 4 5 4 2-3.5 2.5-6.5 2-4 2-7C21.5 5 20 3 17 3c-2 0-3 1-5 1S9 3 7 3z"/></svg>Odonto</button>
+    <button class="tab sec" role="tab" data-v="maisodonto" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M7 3c-2.5 0-4 2-4 4.5 0 3 1.5 4 2 7s1 6.5 2.5 6.5S9 17 12 17s3.5 4 5 4 2-3.5 2.5-6.5 2-4 2-7C21.5 5 20 3 17 3c-2 0-3 1-5 1S9 3 7 3z"/></svg>Odonto</button>
     <button class="tab" role="tab" data-v="gerar" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>Gerar<span class="badge" id="badgeGer" hidden>0</span></button>
-    <button class="tab" role="tab" data-v="saas" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>SaaS</button>
-    <button class="tab" role="tab" data-v="lembretes" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 004 0"/></svg>Lembretes<span class="badge" id="badgeLem" hidden>0</span></button>
-    <button class="tab" role="tab" data-v="rotina" aria-selected="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Rotina</button>
-    <button class="tab" role="tab" data-v="memoria" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8 12h8M8 16h6"/></svg>Memória<span class="badge" id="badgeApr" hidden>0</span></button>
+    <button class="tab sec" role="tab" data-v="saas" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg>SaaS</button>
+    <button class="tab sec" role="tab" data-v="lembretes" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M6 8a6 6 0 1112 0c0 7 3 8 3 8H3s3-1 3-8"/><path d="M10 20a2 2 0 004 0"/></svg>Lembretes<span class="badge" id="badgeLem" hidden>0</span></button>
+    <button class="tab sec" role="tab" data-v="rotina" aria-selected="false"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Rotina</button>
+    <button class="tab sec" role="tab" data-v="memoria" aria-selected="false"><svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v4h4M8 12h8M8 16h6"/></svg>Memória<span class="badge" id="badgeApr" hidden>0</span></button>
+    <button class="tab mob" id="tabMais" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="maisSheet"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/></svg>Mais<span class="badge" id="badgeMais" hidden>0</span></button>
   </nav>
+  <div class="sheet-bg" id="maisBg" hidden></div>
+  <div class="sheet" id="maisSheet" hidden role="menu" aria-label="Mais módulos">
+    <div class="sheet-grip"></div>
+    <div class="sheet-grid">
+      <button role="menuitem" data-go="briefing">Briefing</button>
+      <button role="menuitem" data-go="maisodonto">MaisOdonto</button>
+      <button role="menuitem" data-go="lembretes">Lembretes<span class="badge" data-b="badgeLem" hidden></span></button>
+      <button role="menuitem" data-go="rotina">Rotina</button>
+      <button role="menuitem" data-go="saas">SaaS</button>
+      <button role="menuitem" data-go="memoria">Memória<span class="badge" data-b="badgeApr" hidden></span></button>
+    </div>
+  </div>
 
   <main>
     <header class="hud">
@@ -583,6 +633,7 @@ function show(v){
   document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected", String(t.dataset.v===v)));
   store.set("jva_tab",v);
   if(location.hash!=="#"+v) history.replaceState(null,"","#"+v);
+  window.scrollTo(0,0); if(typeof syncMais==="function") syncMais();
   if(v==="vendas") loadVendas();
   if(v==="leads") loadLeads();
 }
@@ -1018,6 +1069,22 @@ $("#rotForm").addEventListener("submit",async e=>{ e.preventDefault(); const dia
   const { data, error } = await sb.from("jv_rotina").insert({ titulo:$("#rotTxt").value.trim(), hora:$("#rotHora").value, dias }).select(); if(error) return;
   S.rotina.push(data[0]); $("#rotTxt").value=""; renderRotina(); });
 
+
+/* ---------- menu Mais (celular) ---------- */
+const SEC=["briefing","maisodonto","saas","lembretes","rotina","memoria"];
+function abrirMais(on){ $("#maisSheet").hidden=!on; $("#maisBg").hidden=!on; $("#tabMais").setAttribute("aria-expanded",String(on)); if(on) $("#maisSheet button")?.focus(); }
+$("#tabMais").addEventListener("click",()=>abrirMais($("#maisSheet").hidden));
+$("#maisBg").addEventListener("click",()=>abrirMais(false));
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#maisSheet").hidden){ abrirMais(false); $("#tabMais").focus(); } });
+document.querySelectorAll("#maisSheet [data-go]").forEach(b=>b.addEventListener("click",()=>{ abrirMais(false); show(b.dataset.go); window.scrollTo(0,0); }));
+function syncMais(){
+  const cur=store.get("jva_tab","nucleo");
+  $("#tabMais").setAttribute("aria-selected",String(SEC.includes(cur)));
+  document.querySelectorAll("#maisSheet [data-go]").forEach(b=>b.setAttribute("aria-current",String(b.dataset.go===cur)));
+  let tot=0; document.querySelectorAll("#maisSheet [data-b]").forEach(sp=>{ const src=$("#"+sp.dataset.b); sp.hidden=src.hidden; sp.textContent=src.textContent; if(!src.hidden) tot+=+src.textContent||0; });
+  $("#badgeMais").hidden=!tot; $("#badgeMais").textContent=tot;
+}
+setInterval(syncMais,1000);
 /* ---------- login ---------- */
 const arcLogin=reactor($("#arcLogin"));
 let arcMain=null;
