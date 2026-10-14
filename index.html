@@ -8,8 +8,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Jarvis">
 <title>J.A.R.V.I.S.</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2303070c'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%2349e6ff' stroke-width='4' stroke-dasharray='10 4'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23d9f6ff'/%3E%3C/svg%3E">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%2303070c'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%2349e6ff' stroke-width='4' stroke-dasharray='10 4'/%3E%3Ccircle cx='32' cy='32' r='9' fill='%23d9f6ff'/%3E%3C/svg%3E">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -31,6 +33,9 @@ a.go:focus-visible{outline:1px solid var(--cyan);outline-offset:4px}
 .status i{display:inline-block;width:7px;height:7px;border-radius:50%;background:#5cf2a6;box-shadow:0 0 10px #5cf2a6;margin-right:8px;animation:p 2s infinite}
 @keyframes p{50%{opacity:.35}}
 .small{font-size:11.5px;color:var(--mute);opacity:.8}
+.inst{all:unset;cursor:pointer;font-family:"Chakra Petch",system-ui,sans-serif;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);border:1px solid var(--line);padding:10px 18px}
+.inst:hover{border-color:var(--cyan)}
+.inst:focus-visible{outline:1px solid var(--cyan);outline-offset:3px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -42,7 +47,8 @@ a.go:focus-visible{outline:1px solid var(--cyan);outline-offset:4px}
   <div class="status"><i></i>SISTEMAS ONLINE</div>
   <a class="go" id="go" href="https://claude.ai/artifact/TkgAXjkMhyTZJj5pkG93iA">Iniciar</a>
   <p>O painel abre no claude.ai e só funciona logado na conta do dono.</p>
-  <p class="small">No celular: compartilhar &gt; Adicionar à tela de início.</p>
+  <button class="inst" id="instalar" hidden>Instalar o app</button>
+  <p class="small" id="dica">No iPhone: Compartilhar &gt; Adicionar à Tela de Início.</p>
 </main>
 <script>
 (function(){
@@ -58,6 +64,16 @@ a.go:focus-visible{outline:1px solid var(--cyan);outline-offset:4px}
     t+=.016;if(!still)requestAnimationFrame(draw);
   }
   draw();
+})();
+(function(){
+  if("serviceWorker" in navigator){ navigator.serviceWorker.register("sw.js").catch(function(){}); }
+  var btn=document.getElementById("instalar"), dica=document.getElementById("dica"), evento=null;
+  var instalado = matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  if(instalado){ dica.hidden=true; }
+  else if(!/iphone|ipad|ipod/i.test(navigator.userAgent)){ dica.textContent="No Android ou no computador: menu do Chrome > Instalar app."; }
+  window.addEventListener("beforeinstallprompt",function(e){ e.preventDefault(); evento=e; btn.hidden=false; });
+  btn.addEventListener("click",function(){ if(!evento) return; evento.prompt(); evento.userChoice.finally(function(){ evento=null; btn.hidden=true; }); });
+  window.addEventListener("appinstalled",function(){ btn.hidden=true; dica.hidden=true; });
 })();
 </script>
 </body>
